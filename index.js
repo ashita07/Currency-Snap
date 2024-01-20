@@ -1,6 +1,9 @@
-const base_url= "https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/usd/inr.json";
+const base_url= "https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/";
 
 const button = document.querySelector("form button");
+const fromCurr=document.querySelector(".from select")
+const toCurr = document.querySelector(".to select");
+const msg = document.querySelector(".msg")
 
 const dropdowns=document.querySelectorAll(".dropdown select");
 
@@ -32,7 +35,7 @@ const updateFlag=(element)=>{
  img.src=newScr;
 }
 
-button.addEventListener("click",(event)=>{
+button.addEventListener("click",async (event)=>{
 event.preventDefault();
 let amt = document.querySelector(" input")
 let value=amt.value;
@@ -42,4 +45,18 @@ if(value===""){
 if(value<0){
     alert("invalid input")
 }
+
+
+const URL = `${base_url}/${fromCurr.value.toLowerCase()}/${toCurr.value.toLowerCase()}.json`;
+
+let response = await fetch(URL);
+
+let ans = await response.json();
+console.log(ans)
+let rate = ans[toCurr.value.toLowerCase()]
+console.log(rate)
+
+let finalAmt=value*rate;
+
+msg.innerText=`${value} ${fromCurr.value} = ${finalAmt} ${toCurr.value}`
 })
